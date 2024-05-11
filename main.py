@@ -6,8 +6,6 @@ import streamlit as st
 
 os.environ["AWS_PROFILE"] = "default"
 
-# bedrock client
-
 bedrock_client = boto3.client(service_name="bedrock-runtime", region_name="us-east-1")
 
 modelID = "meta.llama2-13b-chat-v1"
@@ -34,4 +32,11 @@ def my_chatbot(language, freeform_text):
     return response
 
 
-print(my_chatbot("spanish", "Hola, como estas?"))
+st.title("Bedrock Chatbot")
+language = st.sidebar.selectbox("Language", ["English", "Spanish", "French", "German"])
+if language:
+    freeform_text = st.sidebar.text_input("Enter your text", max_chars=100)
+
+if freeform_text:
+    response = my_chatbot(language, freeform_text)
+    st.write(response)
